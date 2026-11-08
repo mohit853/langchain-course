@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -rf src)",
+      "Bash(uv sync *)",
+      "Bash(uv run *)"
+    ]
+  }
+}
