@@ -6,13 +6,25 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain_openai import ChatOpenAI
-from langchain_tavily import TavilySearch
+from langchain_tavily import  TavilySearch
+from typing import List                
+from pydantic import BaseModel , Field
+
+class Source(BaseModel):
+    """Schema for source used by an agent"""
+    url:str = Field(description="The URL of the source")
+
+
+class AgentResponse(BaseModel):
+    """Schema for ageAgentResponsent response with answer and sources"""
+    answer:str = Field(description="The agent answer to the query")
+    sources:List[Source] = Field(default_factory=list , description="List of sources to generate the answer")
 
 
 llm = ChatOpenAI(model="gpt-5", temperature=0)
 
 tools = [TavilySearch()]
-agent = create_agent(model=llm, tools=tools)
+agent = create_agent(model=llm, tools=tools,response_format=AgentResponse)
 
 
 def main() -> None:
